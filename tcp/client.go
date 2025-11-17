@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func Client(host string, port int) {
+func RunClient(host string, port int) {
 	address := fmt.Sprintf("%s:%d", host, port)
 	tcpAddr, err := net.ResolveTCPAddr("tcp", address)
 	if err != nil {

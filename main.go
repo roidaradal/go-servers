@@ -3,39 +3,50 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
+	"strings"
 
+	"github.com/roidaradal/fn/dict"
+	"github.com/roidaradal/go-servers/sse"
 	"github.com/roidaradal/go-servers/tcp"
 )
 
 const (
-	usage string = "Usage: go run . <server|client>"
-	host  string = "localhost"
-	port  int    = 6969
+	host string = "localhost"
+	port int    = 6969
 )
 
 func main() {
 	args := os.Args[1:]
 	if len(args) < 1 {
-		fmt.Println(usage)
+		displayUsage()
 		return
 	}
 
-	switch args[0] {
-	case "server":
-		runTCPServer()
-	case "client":
-		runTCPClient()
-	default:
-		fmt.Println(usage)
+	key := args[0]
+	handler, ok := handlers[key]
+	if !ok {
+		displayUsage()
 		return
 	}
+	handler()
 }
 
-func runTCPServer() {
-	server := tcp.NewServer(host, port)
-	server.Run()
+var handlers = map[string]func(){
+	"tcp-server": func() {
+		tcp.NewServer(host, port).Run()
+	},
+	"tcp-client": func() {
+		tcp.RunClient(host, port)
+	},
+	"sse-server": func() {
+		sse.RunServer(host, port)
+	},
 }
 
-func runTCPClient() {
-	tcp.Client(host, port)
+func displayUsage() {
+	fmt.Println("Usage: go run . <option>")
+	options := dict.Keys(handlers)
+	slices.Sort(options)
+	fmt.Println("Options:", strings.Join(options, ", "))
 }
