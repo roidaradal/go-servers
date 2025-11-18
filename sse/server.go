@@ -42,6 +42,7 @@ func RunServer(host string, port int) {
 	s.GET("/items", handleStream)
 	go stream.Run()
 
+	fmt.Println("Running SSE server at", address)
 	server.Run(address)
 }
 

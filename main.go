@@ -9,6 +9,7 @@ import (
 	"github.com/roidaradal/fn/dict"
 	"github.com/roidaradal/go-servers/sse"
 	"github.com/roidaradal/go-servers/tcp"
+	"github.com/roidaradal/go-servers/websocket"
 )
 
 const (
@@ -41,6 +42,9 @@ var handlers = map[string]func(){
 	},
 	"sse-server": func() {
 		sse.RunServer(host, port)
+	},
+	"ws-server": func() {
+		websocket.RunServer(host, port)
 	},
 }
 
