@@ -100,7 +100,7 @@ func (s *StreamServer) Listen() {
 func (s *StreamServer) Run() {
 	interval := 1 * time.Second
 	for {
-		start := clock.TimeNow()
+		start := clock.Now()
 		if len(s.AllClients) == 0 {
 			clock.Sleep(interval, start)
 			continue
